@@ -2,23 +2,19 @@ import argparse
 import socket
 
 
-<<<<<<< HEAD
 def scan_port(host, port):
-=======
-print(f"Scanning {host}...")
-
-# local HTTP server is running on port 8000
-for port in range(7995, 8006):
-    
->>>>>>> 4015d4a37c038bf6cc5527c4cc856c995434d6a0
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     result = sock.connect_ex((host, port))
 
     sock.close()
 
-<<<<<<< HEAD
     return result == 0
+
+def parse_port_range(port_range):
+    start, end = port_range.split("-")
+
+    return int(start), int(end)
 
 
 def main():
@@ -31,13 +27,21 @@ def main():
         help="IP address or hostname to scan"
     )
 
+    parser.add_argument(
+        "--ports",
+        default="1-1024",
+        help="Port range to scan (default: 1-1024)"
+    )
+
     args = parser.parse_args()
 
     host = args.host
 
+    start_port, end_port = parse_port_range(args.ports)
+
     print(f"Scanning {host}...")
 
-    for port in range(1, 10001):
+    for port in range(start_port, end_port + 1):
 
         if scan_port(host, port):
             print(f"[+] Port {port} is OPEN")
@@ -47,6 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
-print("Scan complete.")
->>>>>>> 4015d4a37c038bf6cc5527c4cc856c995434d6a0
